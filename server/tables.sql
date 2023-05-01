@@ -1,0 +1,43 @@
+use mydb;
+CREATE TABLE cities (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  name VARCHAR(255) NOT NULL
+);
+CREATE TABLE theaters (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  name VARCHAR(255) NOT NULL,
+  city_id INT NOT NULL,
+  FOREIGN KEY (city_id) REFERENCES cities(id) ON DELETE CASCADE
+);
+CREATE TABLE movies (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  title VARCHAR(255) NOT NULL,
+  description TEXT,
+  release_date DATE NOT NULL
+);
+CREATE TABLE theater_movies (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  theater_id INT NOT NULL,
+  movie_id INT NOT NULL,
+  FOREIGN KEY (theater_id) REFERENCES theaters(id) ON DELETE CASCADE,
+  FOREIGN KEY (movie_id) REFERENCES movies(id) ON DELETE CASCADE
+);
+
+CREATE TABLE ticket_quantities (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  theater_id INT NOT NULL,
+  movie_id INT NOT NULL,
+  quantity INT NOT NULL,
+  FOREIGN KEY (theater_id) REFERENCES theaters(id) ON DELETE CASCADE,
+  FOREIGN KEY (movie_id) REFERENCES movies(id) ON DELETE CASCADE
+);
+
+CREATE TABLE bookings (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  theater_id INT NOT NULL,
+  movie_id INT NOT NULL,
+  quantity INT NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (theater_id) REFERENCES theaters(id) ON DELETE CASCADE,
+  FOREIGN KEY (movie_id) REFERENCES movies(id) ON DELETE CASCADE
+);
